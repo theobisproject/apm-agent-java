@@ -73,6 +73,7 @@ import static net.bytebuddy.matcher.ElementMatchers.any;
 import static net.bytebuddy.matcher.ElementMatchers.nameContains;
 import static net.bytebuddy.matcher.ElementMatchers.nameEndsWith;
 import static net.bytebuddy.matcher.ElementMatchers.nameStartsWith;
+import static net.bytebuddy.matcher.ElementMatchers.named;
 import static net.bytebuddy.matcher.ElementMatchers.not;
 
 public class ElasticApmAgent {
@@ -342,7 +343,9 @@ public class ElasticApmAgent {
                     not(
                         nameEndsWith("URLConnection")
                             .or(nameStartsWith("java.util.concurrent."))
-                            .or(nameStartsWith("java.lang.Process"))
+                            .or(named("java.lang.ProcessImpl"))
+                            .or(named("java.lang.Process"))
+                            .or(named("java.lang.UNIXProcess"))
                     )
                 )
             )
