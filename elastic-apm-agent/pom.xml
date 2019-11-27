@@ -85,6 +85,7 @@
                             </filters>
                             <relocations>
                                 <relocation>
+                                    <!-- note: disabling this relocation might be required to allow debugging byte-buddy a packaged agent -->
                                     <pattern>net.bytebuddy</pattern>
                                     <shadedPattern>co.elastic.apm.agent.shaded.bytebuddy</shadedPattern>
                                 </relocation>
