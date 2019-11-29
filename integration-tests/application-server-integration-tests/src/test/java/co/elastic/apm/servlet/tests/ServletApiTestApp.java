@@ -11,9 +11,9 @@
  * the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -49,6 +49,7 @@ public class ServletApiTestApp extends TestApp {
         testTransactionErrorReporting(test);
         testSpanErrorReporting(test);
         testExecutorService(test);
+        testExecuteCommandServlet(test);
         testHttpUrlConnection(test);
         testCaptureBody(test);
     }
@@ -75,6 +76,15 @@ public class ServletApiTestApp extends TestApp {
         test.executeAndValidateRequest(pathToTest, null, 200, null);
         String transactionId = test.assertTransactionReported(pathToTest, 200).get("id").textValue();
         final List<JsonNode> spans = test.assertSpansTransactionId(test::getReportedSpans, transactionId);
+        assertThat(spans).hasSize(1);
+    }
+
+    private void testExecuteCommandServlet(AbstractServletContainerIntegrationTest test) throws Exception {
+        test.clearMockServerLog();
+        final String pathToTest = "/simple-webapp/execute-cmd-servlet";
+        test.executeAndValidateRequest(pathToTest, null, 200, null);
+        String transactionId = test.assertTransactionReported(pathToTest, 200).get("id").textValue();
+        List<JsonNode> spans = test.assertSpansTransactionId(test::getReportedSpans, transactionId);
         assertThat(spans).hasSize(1);
     }
 
